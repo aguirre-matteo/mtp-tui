@@ -1,13 +1,11 @@
 package cmd
 
 import (
-	"os"
+	"github.com/aguirre-matteo/mtp-tui/app"
+	"github.com/aguirre-matteo/mtp-tui/config"
 	"github.com/spf13/cobra"
-  "github.com/aguirre-matteo/mtp-tui/app"
-  "github.com/aguirre-matteo/mtp-tui/config"
+	"os"
 )
-
-
 
 var rootCmd = &cobra.Command{
 	Use:   "mtp-tui",
@@ -15,24 +13,22 @@ var rootCmd = &cobra.Command{
 	Long: `This app uses Jmtpfs for mounting MTP devices,
   and Bubbletea for creating an easy to use UI.`,
 	Run: func(cmd *cobra.Command, args []string) {
-    user, err := cmd.Flags().GetString("user")
-    if err != nil {
-      panic(err)
-    }
+		user, err := cmd.Flags().GetString("user")
+		if err != nil {
+			panic(err)
+		}
 
-    err = config.InitViper(user)
-    if err != nil {
-      panic(err)
-    }
+		err = config.InitViper(user)
+		if err != nil {
+			panic(err)
+		}
 
-    err = app.Run()
-    if err != nil {
-      panic(err)
-    }
-  },
+		err = app.Run()
+		if err != nil {
+			panic(err)
+		}
+	},
 }
-
-
 
 func Execute() {
 	err := rootCmd.Execute()
@@ -41,10 +37,6 @@ func Execute() {
 	}
 }
 
-
-
 func init() {
-  rootCmd.Flags().StringP("user", "u", "root", "User which will run the app")
+	rootCmd.Flags().StringP("user", "u", "root", "User which will run the app")
 }
-
-

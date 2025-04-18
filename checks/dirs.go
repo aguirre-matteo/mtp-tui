@@ -1,16 +1,14 @@
 package checks
 
 import (
-  "os"
-  "os/user"
-  "strconv"
-  "github.com/spf13/viper"
+	"github.com/spf13/viper"
+	"os"
+	"os/user"
+	"strconv"
 )
 
-
-
 func mkMnt(mountpoint, owner string) error {
-  err := os.Mkdir(mountpoint, 0755)
+	err := os.Mkdir(mountpoint, 0755)
 	if err != nil {
 		return err
 	}
@@ -37,18 +35,16 @@ func mkMnt(mountpoint, owner string) error {
 		os.RemoveAll(mountpoint)
 		return err
 	}
-  return nil
+	return nil
 }
 
-
-
 func checkMnt() error {
-  mountpoint := viper.GetString("mount.point")
-  user := viper.GetString("user")
-  _, err := os.Stat(mountpoint)
+	mountpoint := viper.GetString("mount.point")
+	user := viper.GetString("user")
+	_, err := os.Stat(mountpoint)
 
-  if os.IsNotExist(err) {
-    err = mkMnt(mountpoint, user)
-  }
-  return err
+	if os.IsNotExist(err) {
+		err = mkMnt(mountpoint, user)
+	}
+	return err
 }
