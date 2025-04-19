@@ -2,6 +2,15 @@ PREVIEW.gif
 
 mtp-tui is a TUI for easily mounting and umounting your phone's storage!
 
+# Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Known issues](#known-issues)
+- [Contributing](#contributing)
+- [Licence](#licence)
+
 # Installation
 First, clone this repository and run `go build` on its root directory:
 
