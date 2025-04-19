@@ -2,6 +2,7 @@ package device
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"os"
 	"os/exec"
 )
@@ -48,7 +49,7 @@ func (dev *Device) Mount() error {
 	}
 
 	devflag := "-device=" + dev.Bus + "," + dev.Id
-	options := "default_permissions,allow_other"
+	options := viper.GetString("mount.options")
 
 	cmd := exec.Command("jmtpfs", devflag, "-o", options, dev.Mountpoint)
 	err = cmd.Run()
