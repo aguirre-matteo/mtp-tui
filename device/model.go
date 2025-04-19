@@ -2,6 +2,7 @@ package device
 
 import (
 	"fmt"
+	"github.com/aguirre-matteo/mtp-tui/errors"
 	"github.com/spf13/viper"
 	"os"
 	"os/exec"
@@ -34,13 +35,11 @@ func (dev Device) FilterValue() string {
 
 func (dev *Device) Mount() error {
 	if dev.Mounted {
-		err := fmt.Errorf("Device %v (%v/%v) is already mounted", dev.Name, dev.Bus, dev.Id)
-		return err
+		return errors.DeviceAlreadyMountedError(dev.Name, dev.Bus, dev.Id)
 	}
 
 	if _, err := os.Stat(dev.Mountpoint); !os.IsNotExist(err) {
-		err = fmt.Errorf("Fatal: wanted to mount device %v (%v/%v), but mountpoint %v already exists", dev.Name, dev.Bus, dev.Id, dev.Mountpoint)
-		return err
+		return errors.DeviceMountpointAlreadyExistsError(dev.Name, dev.Bus, dev.Id, dev.Mountpoint)
 	}
 
 	err := os.Mkdir(dev.Mountpoint, 0755)
@@ -63,13 +62,11 @@ func (dev *Device) Mount() error {
 
 func (dev *Device) Umount() error {
 	if !dev.Mounted {
-		err := fmt.Errorf("Device %v (%v/%v) is not mounted", dev.Name, dev.Bus, dev.Id)
-		return err
+		return errors.DeviceNotMountedError(dev.Name, dev.Bus, dev.Id)
 	}
 
 	if _, err := os.Stat(dev.Mountpoint); os.IsNotExist(err) {
-		err = fmt.Errorf("Fatal: wanted to umount device %v (%v/%v) but mountpoint %v does not exists", dev.Name, dev.Bus, dev.Id, dev.Mountpoint)
-		return err
+		return errors.DeviceMountpointDoesntExistsError(dev.Name, dev.Bus, dev.Id, dev.Mountpoint)
 	}
 
 	cmd := exec.Command("fusermount", "-u", dev.Mountpoint)
