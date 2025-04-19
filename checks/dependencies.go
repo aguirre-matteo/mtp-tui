@@ -1,7 +1,7 @@
 package checks
 
 import (
-	"fmt"
+	"github.com/aguirre-matteo/mtp-tui/errors"
 	"os/exec"
 )
 
@@ -14,12 +14,12 @@ func isCommandAvailable(command string) bool {
 func checkDependencies() error {
 	jmtpfs := isCommandAvailable("jmtpfs")
 	if !jmtpfs {
-		return fmt.Errorf("Command jmtpfs is not available")
+		return errors.JmtpfsNotFoundError
 	}
 
 	fusermount := isCommandAvailable("fusermount")
 	if !fusermount {
-		return fmt.Errorf("Command fusermount is not available")
+		return errors.FuseNotFoundError
 	}
 	return nil
 }

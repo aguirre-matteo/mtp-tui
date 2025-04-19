@@ -1,7 +1,7 @@
 package device
 
 import (
-	"fmt"
+	"github.com/aguirre-matteo/mtp-tui/errors"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -42,9 +42,7 @@ func getJmtpfsOutput() ([]string, error) {
 func stringToDevice(str, mountpoint string) (Device, error) {
 	fields := strings.Split(str, ", ")
 	if len(fields) != 6 {
-		msg := "Wrong device string format: " + str + "\nExpected form *, *, *, *, *, *"
-		err := fmt.Errorf("%v", msg)
-		return Device{}, err
+		return Device{}, errors.WrongDeviceStringFormatError(str)
 	}
 
 	dirname := fields[0] + "_" + fields[1]
@@ -76,8 +74,7 @@ func getMountedDevices(mountpoint string) ([]Device, error) {
 	for _, dirname := range dirs {
 		parts := strings.Split(dirname, "_")
 		if len(parts) != 2 {
-			err := fmt.Errorf("Wrong directory name format: %v\nMove or remove it on %v", dirname, mountpoint)
-			return []Device{}, err
+			return []Device{}, errors.WrongDirnameFormatError(dirname)
 		}
 
 		dirname := parts[0] + "_" + parts[1]
