@@ -2,6 +2,7 @@ package config
 
 import (
 	"os/user"
+	"path/filepath"
 )
 
 func getUserHome(username string) (string, error) {
@@ -21,7 +22,7 @@ func getCfgPath(user string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		return home + "/.config/", nil
+		return filepath.Join(home, ".config"), nil
 	}
 }
 
@@ -33,7 +34,6 @@ func getDefaultMnt(user string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-
-		return home + "/mtp/", nil
+		return filepath.Join(home, "mtp"), nil
 	}
 }

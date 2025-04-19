@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -46,11 +47,14 @@ func stringToDevice(str, mountpoint string) (Device, error) {
 		return Device{}, err
 	}
 
+	dirname := fields[0] + "_" + fields[1]
+	finalMnt := filepath.Join(mountpoint, dirname)
+
 	device := Device{
 		Bus:        fields[0],
 		Id:         fields[1],
 		Name:       fields[4],
-		Mountpoint: mountpoint + "/" + fields[0] + "_" + fields[1],
+		Mountpoint: finalMnt,
 	}
 	return device, nil
 }
@@ -76,12 +80,15 @@ func getMountedDevices(mountpoint string) ([]Device, error) {
 			return []Device{}, err
 		}
 
+		dirname := parts[0] + "_" + parts[1]
+		finalMnt := filepath.Join(mountpoint, dirname)
+
 		device := Device{
 			Bus:        parts[0],
 			Id:         parts[1],
 			Name:       "Unknown",
 			Mounted:    true,
-			Mountpoint: mountpoint + parts[0] + "_" + parts[1],
+			Mountpoint: finalMnt,
 		}
 		devices = append(devices, device)
 	}
