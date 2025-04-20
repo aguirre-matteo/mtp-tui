@@ -14,6 +14,7 @@ func InitViper(user string) error {
 	viper.SetConfigName("mtp-tui")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(cfgPath)
+	viper.AddConfigPath("/etc/")
 
 	//Default settings
 	viper.Set("user", user)
