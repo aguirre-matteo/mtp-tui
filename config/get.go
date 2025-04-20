@@ -15,15 +15,11 @@ func getUserHome(username string) (string, error) {
 }
 
 func getCfgPath(user string) (string, error) {
-	if user == "root" {
-		return "/etc/", nil
-	} else {
-		home, err := getUserHome(user)
-		if err != nil {
-			return "", err
-		}
-		return filepath.Join(home, ".config"), nil
+	home, err := getUserHome(user)
+	if err != nil {
+		return "", err
 	}
+	return filepath.Join(home, ".config"), nil
 }
 
 func getDefaultMnt(user string) (string, error) {

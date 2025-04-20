@@ -55,7 +55,7 @@ you update the list after changing to "File Transfer" mode. Otherwise, you won't
 to access your files.
 
 # Configuration
-A simple YAML config file can be place under `/etc/mtp-tui.yml` (for root) or `~/.config/mtp-tui.yml`
+A simple YAML config file can be place under `/etc/mtp-tui.yml` or `~/.config/mtp-tui.yml`
 (other users) to configure mounting options. Here's an example config showing all the available options,
 and its default values:
 
