@@ -47,12 +47,12 @@ This will open the interface, showing all the detected devices in that moment.
 You can move through the elements using the arrow keys or HJKL.
 
 If you haven't already connected your device, it's now time to do so.
-Connect your phone to your computer and swipe down the screen and you'll
-find a notification saying that the device has been connected.
+In the case of an Android phone, connect it to your computer, swipe down
+the screen and you'll find a notification saying that the device has been connected.
 
 <img src="./screenshots/usb-notification.png" width="300" alt="USB Notification">
 
-Then touch it and the USB's Connection details will open. Select the "File Transfer"
+Then click on it and the USB's Connection details will open. Select the "File Transfer"
 option in the "Use USB for" section. This way you'll be able to access your phone's 
 storage.
 
@@ -64,7 +64,7 @@ to access your files.
 
 ## Configuration
 A simple YAML config file can be placed on `/etc/mtp-tui.yml` or `~/.config/mtp-tui.yml`
-(other users) to configure mounting options. Here's an example config showing all the available options,
+to configure mounting options. Here's an example config showing all the available options,
 and its default values:
 
 ```yaml
@@ -75,7 +75,10 @@ mount:
 ```
 
 # Nix
-To install Mtp-Tui on NixOS, this project provides a NixOS and a Home-Manager module.
+> [!NOTE]
+> This guide assumes you have flakes enabled in your Nix config.
+
+To install Mtp-Tui on NixOS, this project provides both a NixOS and a Home-Manager module.
 
 ## Flake
 First, add this repository to your flake's inputs:
@@ -149,7 +152,7 @@ Here's an example config:
 ```
 
 # Known issues
-At the date of writing this guide, there're is no easy way to mount a phone without root permissions.
+At the date of writing this guide, there're is no easy way to mount a MTP device without root permissions.
 There are also some bugs regarding to LIBMTP and Jmtpfs, and this app throws an exception when trying to
 run it without `sudo`, so the best option for now is to use `sudo` along the `-u` flag.
 
