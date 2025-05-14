@@ -7,6 +7,7 @@ Android phones, digital cameras and media players fall under this category.
 - [Getting Started](#getting-started)
     - [Installation](#installation)
     - [Usage](#usage)
+    - [Flags](#flags)
     - [Configuration](#configuration)
 - [Nix](#nix)
     - [Flake](#flake)
