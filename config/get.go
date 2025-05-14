@@ -15,6 +15,10 @@ func getUserHome(username string) (string, error) {
 }
 
 func getCfgPath(user string) (string, error) {
+	if user == "root" {
+		return "/etc", nil
+	}
+
 	home, err := getUserHome(user)
 	if err != nil {
 		return "", err

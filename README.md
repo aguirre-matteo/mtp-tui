@@ -62,6 +62,14 @@ Now, in your computer, press "r" on the app and the device list will update. Mak
 you update the list after changing to "File Transfer" mode. Otherwise, you won't be able 
 to access your files.
 
+## Flags
+The following flags can be used to alter the behaviour of the app:
+```shell
+-u|--user: Which user will run mtp-tui. This is useful for ensuring mtp-tui mounts the devices under the right home directory. Defaults to root.
+
+-c|--config: Path to the config folder where mtp-tui.yml is found. Must be an absolute path.
+```
+
 ## Configuration
 A simple YAML config file can be placed on `/etc/mtp-tui.yml` or `~/.config/mtp-tui.yml`
 to configure mounting options. Here's an example config showing all the available options,

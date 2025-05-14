@@ -41,3 +41,14 @@ func WrongDirnameFormatError(dirname string) error {
 	msg += "Expected format: *_*"
 	return fmt.Errorf(msg)
 }
+
+func ConfigPathRelativeError(path string) error {
+	msg := "Expected an absolute path to config folder.\n"
+	msg += fmt.Sprintf("Got %v\n", path)
+	return fmt.Errorf(msg)
+}
+
+func ConfigFileNotFoundError(path string) error {
+	msg := fmt.Sprintf("The config folder %v doens't exists.\n", path)
+	return fmt.Errorf(msg)
+}

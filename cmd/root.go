@@ -13,12 +13,7 @@ var rootCmd = &cobra.Command{
 	Long: `This app uses Jmtpfs for mounting MTP devices,
   and Bubbletea for creating an easy to use UI.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		user, err := cmd.Flags().GetString("user")
-		if err != nil {
-			panic(err)
-		}
-
-		err = config.InitViper(user)
+		err := config.InitViper(cmd)
 		if err != nil {
 			panic(err)
 		}
@@ -39,4 +34,5 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().StringP("user", "u", "root", "User which will run the app")
+	rootCmd.Flags().StringP("config", "c", "unset", "Path to config file")
 }
