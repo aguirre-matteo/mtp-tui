@@ -127,7 +127,7 @@ add this flake's overlay. Otherwise Nix wouldn't be able to find the package:
 ## Modules
 These are the options implemented by both NixOS and Home-Manager modules at `programs.mtp-tui`:
 
-|            | NixOS module    | Home-Manager module |
+| Option     | NixOS module    | Home-Manager module |
 |------------|-----------------|---------------------|
 | `enable`   | Enables the app | Enable the app      |
 | `package`  | The package     | The package         |
