@@ -162,8 +162,8 @@ Here's an example config:
 
 # Known issues
 At the date of writing this guide, there're is no easy way to mount a MTP device without root permissions.
-There are also some bugs regarding to LIBMTP and Jmtpfs, and this app throws an exception when trying to
-run it without `sudo`, so the best option for now is to use `sudo` along the `-u` flag.
+There are also some bugs regarding to LIBMTP and Jmtpfs, and the user may have read-only access to the
+filesystem, so the best option for now is to use `sudo` along the `-u` flag.
 
 # Contributing
 If you want to contribute to this project, you have some options to do so:
