@@ -1,4 +1,4 @@
-PREVIEW.gif
+![Mtp-Tui Preview](./assets/preview.png)
 
 Mtp-Tui is a terminal user interface for easily mounting and umounting your MTP devices.
 Android phones, digital cameras and media players fall under this category.
@@ -51,13 +51,13 @@ If you haven't already connected your device, it's now time to do so.
 In the case of an Android phone, connect it to your computer, swipe down
 the screen and you'll find a notification saying that the device has been connected.
 
-<img src="./screenshots/usb-notification.png" width="300" alt="USB Notification">
+<img src="./assets/usb-notification.png" width="300" alt="USB Notification">
 
 Then click on it and the USB's Connection details will open. Select the "File Transfer"
 option in the "Use USB for" section. This way you'll be able to access your phone's 
 storage.
 
-<img src="./screenshots/usb-settings.png" width="300" alt="USB Settings">
+<img src="./assets/usb-settings.png" width="300" alt="USB Settings">
 
 Now, in your computer, press "r" on the app and the device list will update. Make sure
 you update the list after changing to "File Transfer" mode. Otherwise, you won't be able 
