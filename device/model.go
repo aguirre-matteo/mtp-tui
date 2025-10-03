@@ -35,11 +35,11 @@ func (dev Device) FilterValue() string {
 
 func (dev *Device) Mount() error {
 	if dev.Mounted {
-		return errors.DeviceAlreadyMountedError(dev.Name, dev.Bus, dev.Id)
+		return errors.DeviceAlreadyMounted(dev.Name, dev.Bus, dev.Id)
 	}
 
 	if _, err := os.Stat(dev.Mountpoint); !os.IsNotExist(err) {
-		return errors.DeviceMountpointAlreadyExistsError(dev.Name, dev.Bus, dev.Id, dev.Mountpoint)
+		return errors.DeviceMountpointAlreadyExists(dev.Name, dev.Bus, dev.Id, dev.Mountpoint)
 	}
 
 	err := os.Mkdir(dev.Mountpoint, 0755)
@@ -62,11 +62,11 @@ func (dev *Device) Mount() error {
 
 func (dev *Device) Umount() error {
 	if !dev.Mounted {
-		return errors.DeviceNotMountedError(dev.Name, dev.Bus, dev.Id)
+		return errors.DeviceNotMounted(dev.Name, dev.Bus, dev.Id)
 	}
 
 	if _, err := os.Stat(dev.Mountpoint); os.IsNotExist(err) {
-		return errors.DeviceMountpointDoesntExistsError(dev.Name, dev.Bus, dev.Id, dev.Mountpoint)
+		return errors.DeviceMountpointDoesntExists(dev.Name, dev.Bus, dev.Id, dev.Mountpoint)
 	}
 
 	cmd := exec.Command("fusermount", "-u", dev.Mountpoint)

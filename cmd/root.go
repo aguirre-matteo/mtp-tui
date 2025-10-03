@@ -11,7 +11,7 @@ var rootCmd = &cobra.Command{
 	Use:   "mtp-tui",
 	Short: "A TUI application for easily mounting your MTP devices!",
 	Long: `This app uses Jmtpfs for mounting MTP devices,
-  and Bubbletea for creating an easy to use UI.`,
+and Bubbletea for creating an easy to use UI.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := config.InitViper(cmd)
 		if err != nil {
