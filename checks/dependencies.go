@@ -14,12 +14,12 @@ func isCommandAvailable(command string) bool {
 func checkDependencies() error {
 	jmtpfs := isCommandAvailable("jmtpfs")
 	if !jmtpfs {
-		return errors.JmtpfsNotFoundError
+		return errors.JmtpfsNotFound
 	}
 
 	fusermount := isCommandAvailable("fusermount")
 	if !fusermount {
-		return errors.FuseNotFoundError
+		return errors.FuseNotFound
 	}
 	return nil
 }

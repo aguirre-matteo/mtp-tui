@@ -8,7 +8,7 @@ import (
 
 func assertConfigPath(path string) error {
 	if !strings.HasPrefix(path, "/") {
-		return errors.ConfigPathRelativeError(path)
+		return errors.ConfigPathRelative(path)
 	}
 
 	_, err := os.Stat(path)
@@ -17,7 +17,7 @@ func assertConfigPath(path string) error {
 	}
 
 	if os.IsNotExist(err) {
-		return errors.ConfigFileNotFoundError(path)
+		return errors.ConfigFileNotFound(path)
 	}
 
 	return err

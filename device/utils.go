@@ -42,7 +42,7 @@ func getJmtpfsOutput() ([]string, error) {
 func stringToDevice(str, mountpoint string) (Device, error) {
 	fields := strings.Split(str, ", ")
 	if len(fields) != 6 {
-		return Device{}, errors.WrongDeviceStringFormatError(str)
+		return Device{}, errors.WrongDeviceStringFormat(str)
 	}
 
 	dirname := fields[0] + "_" + fields[1]
@@ -74,7 +74,7 @@ func getMountedDevices(mountpoint string) ([]Device, error) {
 	for _, dirname := range dirs {
 		parts := strings.Split(dirname, "_")
 		if len(parts) != 2 {
-			return []Device{}, errors.WrongDirnameFormatError(dirname)
+			return []Device{}, errors.WrongDirnameFormat(dirname)
 		}
 
 		dirname := parts[0] + "_" + parts[1]
