@@ -87,7 +87,7 @@ mount:
 > [!NOTE]
 > This guide assumes you have flakes enabled in your Nix config.
 
-To install Mtp-Tui on NixOS, this project provides both a NixOS and a Home-Manager module.
+To install Mtp-Tui through Nix, this project provides both a NixOS and a Home-Manager module.
 
 ## Flake
 First, add this repository to your flake's inputs:
@@ -111,20 +111,20 @@ add this flake's overlay. Otherwise Nix wouldn't be able to find the package:
       # ...
       modules = [
         ./configuration.nix
-        inputs.mtp-tui.nixosModule # <--- This installs the NixOS module
+        inputs.mtp-tui.nixosModules.mtp-tui # <--- This installs the NixOS module
         
         home-manager.nixosModules.home-manager
         {
           home-manager = {
             # ...
             sharedModules = [
-              inputs.mtp-tui.homeManagerModule # <--- This installs the Home-Manager module
+              inputs.mtp-tui.homeManagerModules.mtp-tui # <--- This installs the Home-Manager module
             ];
           };
         }
         {
           nixpkgs.overlays = [
-            inputs.mtp-tui.overlay # <--- This installs the Nixpkgs overlay
+            inputs.mtp-tui.overlays.mtp-tui # <--- This installs the Nixpkgs overlay
           ];
         }
       ];

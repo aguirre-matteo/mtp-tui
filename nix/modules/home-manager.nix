@@ -1,25 +1,30 @@
 { lib, pkgs, config, ... }:
 let
   inherit (lib)
-  mkIf mkEnableOption mkPackageOption mkOption;
+  types mkIf mkEnableOption mkOption;
 
   cfg = config.programs.mtp-tui;
-
-  formatter = pkgs.formats.yaml { };
+  yamlFormat = pkgs.formats.yaml { };
 in
 {
   options.programs.mtp-tui = {
     enable = mkEnableOption "mtp-tui";
-    package = mkPackageOption pkgs "mtp-tui" { nullable = true; };
+    package = mkOption {
+      type = with types; nullOr package;
+      default = pkgs.callPackage ../package.nix { };
+      defaultText = "pkgs.mtp-tui";
+      description = "The mtp-tui package to use.";
+    };
+
     settings = mkOption {
-      type = formatter.type;
+      type = yamlFormat.type;
       default = { };
-      example = ''
+      example = {
         mount = {
           point = "/home/youruser/Documents/mtp";
           options = "default_permissions";
         };
-      '';
+      };
       description = ''
         Settings for mtp-tui. All available options can be found in the documentation at
         <https://github.com/aguirre-matteo/mtp-tui?tab=readme-ov-file#configuration>.
@@ -28,14 +33,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
-      cfg.package
-      pkgs.jmtpfs
-      pkgs.fuse
-    ];
-  
+    home.packages = mkIf (cfg.package != null) [ cfg.package ];
     xdg.configFile = mkIf (cfg.settings != { }) {
-      "mtp-tui.yml".source = (formatter.generate "mtp-tui.yml" cfg.settings);
+      "mtp-tui.yml".source = (yamlFormat.generate "mtp-tui.yml" cfg.settings);
     };
   };
 }
