@@ -1,0 +1,9 @@
+excludes = [".git/*", "target/*", "assets", "Cargo.toml", "Cargo.lock", "treefmt.toml", "README.md", "LICENSE"]
+
+[formatter.nixfmt]
+command = "nixfmt"
+includes = ["*.nix"]
+
+[formatter.rustfmt]
+command = "rustfmt"
+includes = ["*.rs"]

@@ -1,7 +1,16 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   inherit (lib)
-  types mkIf mkEnableOption mkOption;
+    types
+    mkIf
+    mkEnableOption
+    mkOption
+    ;
 
   cfg = config.programs.mtp-tui;
   yamlFormat = pkgs.formats.yaml { };
