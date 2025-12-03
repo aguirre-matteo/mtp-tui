@@ -1,0 +1,2 @@
+- Change screenshots and add a GIF
+- Graphical error messages

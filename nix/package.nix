@@ -1,32 +1,29 @@
-{
-  lib,
-  stdenvNoCC,
-  callPackage,
-  jmtpfs,
-  fuse,
-  makeWrapper
-}:
+{ naersk', pkgs }:
 
-stdenvNoCC.mkDerivation {
-  pname = "mtp-tui";
+naersk'.buildPackage {
+  name = "mtp-tui";
   version = "unstable";
-  src = callPackage ./package-unwrapper.nix {};
-  
-  nativeBuildInputs = [ makeWrapper ];
-  buildInputs = [
+  src = ../.;
+
+  nativeBuildInputs = [ pkgs.makeWrapper ];
+  buildInputs = with pkgs; [
     jmtpfs
     fuse
   ];
 
-  installPhase = ''
-    mkdir -p $out/bin
-    makeWrapper $src/bin/mtp-tui $out/bin/mtp-tui \
-      --prefix PATH : "${lib.makeBinPath [ jmtpfs fuse ]}"
+  postInstall = with pkgs; ''
+    wrapProgram $out/bin/mtp-tui \
+      --prefix PATH : "${
+        lib.makeBinPath [
+          jmtpfs
+          fuse
+        ]
+      }"
   '';
 
   meta = {
     description = "A TUI for easily mounting and umounting your MTP devices!";
     homepage = "https://github.com/aguirre-matteo/mtp-tui";
-    license = lib.licenses.mit;
+    license = pkgs.lib.licenses.mit;
   };
 }

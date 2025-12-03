@@ -1,3 +1,2 @@
-mtp-tui
-flake.lock
-result
+/target
+/result

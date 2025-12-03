@@ -1,9 +1,3 @@
-> [!NOTE]
-> This is the old Go codebase for `mtp-tui`. It's no longer under maintenance,
-> and has been replaced by the V2 of the app which is written in Rust.
-> I encourage you to use the new version, since it doesn't need the use of `sudo`
-> and the `-u` flag.
-
 ![Mtp-Tui Preview](./assets/preview.png)
 
 Mtp-Tui is a terminal user interface for easily mounting and umounting your MTP devices.
@@ -13,47 +7,53 @@ Android phones, digital cameras and media players fall under this category.
 - [Getting Started](#getting-started)
     - [Installation](#installation)
     - [Usage](#usage)
-    - [Flags](#flags)
     - [Configuration](#configuration)
 - [Nix](#nix)
     - [Flake](#flake)
     - [Modules](#modules)
-- [Known issues](#known-issues)
 - [Contributing](#contributing)
 - [Licence](#licence)
 
 # Getting Started
-Mtp-Tui is a terminal user interface for easily mounting and umounting your MTP devices.
-Android phones, digital cameras and media players fall under this category.
 
 ## Installation
-First, clone this repository and run `go build` on its root directory:
+The first step is to clone this Git repository and enter to it:
 
 ```shell
-git clone https://github.com/aguirre-matteo/mtp-tui
-cd mtp-tui
-go build
+[myuser@linux:~/workdir]$ git clone https://github.com/aguirre-matteo/mtp-tui
+Cloning into 'mtp-tui'...
+remote: Enumerating objects: 151, done.
+remote: Counting objects: 100% (151/151), done.
+remote: Compressing objects: 100% (111/111), done.
+remote: Total 151 (delta 55), reused 117 (delta 31), pack-reused 0 (from 0)
+Receiving objects: 100% (151/151), 199.84 KiB | 1.19 MiB/s, done.
+Resolving deltas: 100% (55/55), done.
+
+[myuser@linux:~/workdir]$ cd mtp-tui
+
 ```
 
-Then copy the binary to somewhere in your $PATH. For example, copy it to `/usr/bin/`:
+Then run `cargo install --path .` to start the compilation process and install the
+binary to your `~/.cargo/bin/`. Make sure you have this directory added in your `$PATH`.
 
 ```shell
-cp ./mtp-tui /usr/bin/
+[myuser@linux:~/workdir/mtp-tui]$ cargo install --path .
+  Installing mtp-tui v0.1.0 (/home/myuser/workdir/mtp-tui)
+    Updating crates.io index
+     Locking 148 packages to latest Rust 1.86.0 compatible versions
+      Adding generic-array v0.14.7 (available: v0.14.9)
+      Adding unicode-width v0.2.0 (available: v0.2.2)
+    Finished `release` profile [optimized] target(s) in 4.82s
+  Installing /home/myuser/.cargo/bin/mtp-tui
+   Installed package `mtp-tui v0.1.0 (/home/myuser/workdir/mtp-tui)` (executable `mtp-tui`)
 ```
 
 ## Usage 
-The `mtp-tui` command must be run with `sudo`, so it can access the
-device's storage. Use the `-u` flag for specifying under which user's 
-config the program will be running:
-
-```shell
-mtp-tui -u yourusername
-```
-
+All you have to do to start the program is to type `mtp-tui` in your terminal.
 This will open the interface, showing all the detected devices in that moment.
-You can move through the elements using the arrow keys or HJKL.
+You can move through the elements using the arrow keys or J and K.
 
-If you haven't already connected your device, it's now time to do so.
+If you haven't already connected your device, now it's time to do so.
 In the case of an Android phone, connect it to your computer, swipe down
 the screen and you'll find a notification saying that the device has been connected.
 
@@ -65,17 +65,14 @@ storage.
 
 <img src="./assets/usb-settings.png" width="300" alt="USB Settings">
 
+> [!WARNING]
+> When you connect a new device, by default it won't be configured as "File Transfer".
+> If you don't manually change the device mode, `mtp-tui` will fail when umounting the device
+> because FUSE will create an empty directory owned by `root` since it cannot access the phone's filesystem.
+
 Now, in your computer, press "r" on the app and the device list will update. Make sure
 you update the list after changing to "File Transfer" mode. Otherwise, you won't be able 
 to access your files.
-
-## Flags
-The following flags can be used to alter the behaviour of the app:
-```shell
--u|--user: Which user will run mtp-tui. This is useful for ensuring mtp-tui mounts the devices under the right home directory. Defaults to root.
-
--c|--config: Path to the config folder where mtp-tui.yml is found. Must be an absolute path.
-```
 
 ## Configuration
 A simple YAML config file can be placed on `/etc/mtp-tui.yml` or `~/.config/mtp-tui.yml`
@@ -83,22 +80,29 @@ to configure mounting options. Here's an example config showing all the availabl
 and its default values:
 
 ```yaml
+colors:
+  title_font: "#FFFFFF"                  # Font color for the "Available MTP Devices" title
+  title_background: "#5F5FD7"            # Background color for the title
+  selected_device: "#C86EC8"             # Font color the selected device should use
+
 mount:
-  point: /mtp/                             # Where devices will be mounted. If the user is different from root, it will be ~/mtp/
-  options: default_permissions,allow_other # Mount options. These ensure your user has access to the drive.
-                                           # default_permissions ensures the mounted FS inherits his parent directory's permissions.
+  point: /home/myuser/mtp                  # Directory where mounted devices should be placed. Each device will have it's own
+                                           # subdirectory here (e.g. mtp/1_10, mtp/1_11, ...).
+  options: "None"                          # Extra mount options to pass as arguments to 'jmtpfs'. All the available options can 
+                                           # be discovered by running 'jmtpfs -h'.
 ```
 
 # Nix
 > [!NOTE]
 > This guide assumes you have flakes enabled in your Nix config.
+> If not, see the [official wiki](https://wiki.nixos.org/wiki/Flakes).
 
 To install Mtp-Tui through Nix, this project provides both a NixOS and a Home-Manager module.
 
 ## Flake
 First, add this repository to your flake's inputs:
 
-```flake.nix
+```nix
 {
   inputs = {
     # ...
@@ -110,7 +114,7 @@ First, add this repository to your flake's inputs:
 Then add the NixOS and Home-Manager modules in your configuration. You should also
 add this flake's overlay. Otherwise Nix wouldn't be able to find the package:
 
-```flake.nix
+```nix
 {
   outputs = { self, nixpkgs, home-manager, ...}@inputs: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
@@ -142,23 +146,27 @@ add this flake's overlay. Otherwise Nix wouldn't be able to find the package:
 ## Modules
 These are the options implemented by both NixOS and Home-Manager modules at `programs.mtp-tui`:
 
-| Option     | NixOS module    | Home-Manager module |
-|------------|-----------------|---------------------|
-| `enable`   | Enables the app | Enable the app      |
-| `package`  | The package     | The package         |
-| `settings` | /etc config     | ~/.config config    |
+| Option     | NixOS module                | Home-Manager module             |
+|------------|-----------------------------|---------------------------------|
+| `enable`   | Enables the app             | Enable the app                  |
+| `package`  | The package                 | The package                     |
+| `settings` | /etc/mtp-tui.yml config     | ~/.config/mtp-tui.yml config    |
 
 Here's an example config:
-```configuration.nix
+```nix
 { pkgs, ... }:
 
 {
   programs.mtp-tui = {
     enable = true;
-    package = pkgs.mtp-tui.override { buildGoModule = my.custom.function };
     settings = {
+      colors = {
+        title_font = "#000000";
+        title_background = "#FFFFFF";
+        selected_device = "#FFFFFF";
+      };
       mount = {
-        point = "/home/matteo/Documents/mtp";
+        point = "/home/youruser/Documents/mtp";
         options = "default_permissions,allow_other";
       };
     };
@@ -166,15 +174,10 @@ Here's an example config:
 }
 ```
 
-# Known issues
-At the date of writing this guide, there're is no easy way to mount a MTP device without root permissions.
-There are also some bugs regarding to LIBMTP and Jmtpfs, and the user may have read-only access to the
-filesystem, so the best option for now is to use `sudo` along the `-u` flag.
-
 # Contributing
 If you want to contribute to this project, you have some options to do so:
 
-- Solving an open issue.
+- Solving an issue.
 - Open an issue reporting a bug or requesting a feature.
 - Spread this project in forums, or recommending it to someone else.
 
