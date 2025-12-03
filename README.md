@@ -1,3 +1,9 @@
+> [!NOTE]
+> This is the old Go codebase for `mtp-tui`. It's no longer under maintenance,
+> and has been replaced by the V2 of the app which is written in Rust.
+> I encourage you to use the new version, since it doesn't need the use of `sudo`
+> and the `-u` flag.
+
 ![Mtp-Tui Preview](./assets/preview.png)
 
 Mtp-Tui is a terminal user interface for easily mounting and umounting your MTP devices.
