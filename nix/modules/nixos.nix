@@ -1,7 +1,17 @@
-{ lib, pkgs, config, ... }:
+naersk:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   inherit (lib)
-  types mkIf mkEnableOption mkOption;
+    types
+    mkIf
+    mkEnableOption
+    mkOption
+    ;
 
   cfg = config.programs.mtp-tui;
   yamlFormat = pkgs.formats.yaml { };
@@ -11,7 +21,10 @@ in
     enable = mkEnableOption "mtp-tui";
     package = mkOption {
       type = with types; nullOr package;
-      default = pkgs.callPackage ../package.nix { };
+      default = import ../package.nix {
+        inherit pkgs;
+        naersk' = pkgs.callPackage naersk { };
+      };
       defaultText = "pkgs.mtp-tui";
       description = "The mtp-tui package to use.";
     };
